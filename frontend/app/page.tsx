@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 const memories = [
   {
     icon: "📱",
@@ -42,6 +45,20 @@ const categories = [
 ];
 
 export default function Home() {
+
+  const [apiMemories, setApiMemories] = useState(memories);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/memories")
+      .then((response) => response.json())
+      .then((data) => {
+        setApiMemories(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching memories:", error);
+      });
+  }, []);
+
   return (
     <main className="min-h-screen bg-[#f4ead8] text-[#241c17]">
 
@@ -184,7 +201,7 @@ export default function Home() {
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
 
-          {memories.map((memory) => (
+          {apiMemories.map((memory) => (
             <article
               key={memory.title}
               className="group overflow-hidden rounded-3xl border border-[#241c17]/10 bg-[#fffaf2] transition hover:-translate-y-2 hover:shadow-xl"
@@ -277,7 +294,7 @@ export default function Home() {
 
             <p className="mt-5 leading-7 text-white/70">
               Discover the objects, entertainment and everyday experiences
-              that became part of India's shared memory.
+              that became part of India&apos;s shared memory.
             </p>
 
             <button className="mt-8 rounded-full bg-[#d7a35d] px-6 py-3 font-bold text-[#241c17]">
@@ -414,7 +431,7 @@ export default function Home() {
             </h2>
 
             <p className="mt-3 max-w-md text-sm leading-6 text-white/60">
-              Remembering India's 1980s and 1990s through memories,
+              Remembering India&apos;s 1980s and 1990s through memories,
               stories and a trusted retro marketplace.
             </p>
           </div>
